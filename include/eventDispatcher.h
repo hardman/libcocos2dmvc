@@ -3,18 +3,16 @@
 #include "cocos2d_mvc.h"
 namespace cocos2d_mvc{
 	class Event;
-	class EventDispatcher: public CCNode{
+	class  EventDispatcher: public CCNode{
 		CCDictionary * listeningEvts;
 		CCDictionary * incomingReqEvts;
 		static EventDispatcher * globalDispatcher;
 		EventDispatcher();
-		EEE(EventDispatcher)
-		ECC(EventDispatcher)
 	protected:
 	public:
 		static EventDispatcher *getNewEvtDispatcher();
 		static EventDispatcher *getGlobalEvtDispatcher();
-		static void destroyGlobalEvtDispatcher();
+		//static void destroyGlobalEvtDispatcher();
 		void addListener(Event *evt);
 		void rmListener(Event *evt);
 		void addIncomingReq(Event *evt);

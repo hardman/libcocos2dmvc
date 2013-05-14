@@ -4,12 +4,9 @@
 
 namespace cocos2d_mvc{
 	class Controller;
-	class Model: public CCObject, public EventDispatchHelper{
-		EEE(Model)
-		ECC(Model)
-		Controller* controller;
+	class  Model: public CCObject, public EventDispatchHelper{
 	protected:
-		Model(Controller* controller);
+		Model();
 	public:
 		void notifyModelChanged();
 		virtual void onUpdate(float f) = 0;

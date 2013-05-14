@@ -6,7 +6,7 @@
 namespace cocos2d_mvc{
 	class EventDispatcher;
 	class Injector;
-	class EventDispatchHelper{
+	class  EventDispatchHelper{
 	protected:
 		EventDispatcher * evtDispatcher;
 		Injector * injector;

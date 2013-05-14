@@ -47,7 +47,7 @@
       </PrecompiledHeader>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)..\cocos2dx;$(ProjectDir)..\cocos2dx\include;$(ProjectDir)..\cocos2dx\kazmath\include;$(ProjectDir)..\cocos2dx\platform\win32;$(ProjectDir)..\cocos2dx\platform\third_party\win32;$(ProjectDir)..\cocos2dx\platform\third_party\win32\OGLES;$(ProjectDir)..\CocosDenshion\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -85,7 +85,6 @@
     <ClInclude Include="include\injector.h" />
     <ClInclude Include="include\model.h" />
     <ClInclude Include="include\view.h" />
-    <ClInclude Include="testinclude.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="event\event.cpp" />

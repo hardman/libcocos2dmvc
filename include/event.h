@@ -5,9 +5,7 @@
 
 namespace cocos2d_mvc{
 	class EventDispatcher;
-	class Event:public CCObject{
-		EEE(Event)
-		ECC(Event)
+	class  Event:public CCObject{
 		bool needClean;//表示data是否需要清理
 	public:
 		enum{

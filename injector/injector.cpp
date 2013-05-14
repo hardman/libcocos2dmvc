@@ -2,10 +2,28 @@
 
 
 namespace cocos2d_mvc{	
+	class InjectorFuncWrapper: public CCObject{
+	public:
+		injectorCreate icfunc;
+		operator injectorCreate(){
+			return icfunc;
+		}
+	};
+
+	Injector::Injector(){
+		singletonDict = CCDictionary::create();
+		CC_SAFE_RETAIN(singletonDict);
+		classDict = CCDictionary::create();
+		CC_SAFE_RETAIN(classDict);
+		valueDict = CCDictionary::create();
+		CC_SAFE_RETAIN(valueDict);
+	}
+
 	Injector * Injector::getGlobalInjector(){
 		static Injector * xxx = 0;
 		if(!xxx) {
 			xxx = Injector::create();
+			xxx->retain();
 		}
 		return xxx;
 	}
@@ -28,7 +46,7 @@ namespace cocos2d_mvc{
 		}else{
 			finded = classDict->objectForKey(className);
 			if(finded != 0){
-				return ((injectorCreate)finded)();
+				return ((InjectorFuncWrapper*)finded)->operator cocos2d_mvc::injectorCreate()();
 			}else{
 				finded = valueDict->objectForKey(className);
 				if(finded != 0){
@@ -41,7 +59,9 @@ namespace cocos2d_mvc{
 	
 	void Injector::mapSingleton(injectorCreate createFunc, string className){
 		if(false == checkExist(className)){
-			singletonDict->setObject(createFunc(), className);
+			CCObject* obj = createFunc();
+			obj->retain();
+			singletonDict->setObject(obj, className);
 		}else{
 			CCLog("in mapSingleton() 已经有%s这个类了，不能重复map，可以先unmap一下", className.c_str());
 		}
@@ -49,7 +69,10 @@ namespace cocos2d_mvc{
 
 	void Injector::mapClass(injectorCreate createFunc, string className){
 		if(false == checkExist(className)){
-			classDict->setObject((CCObject*)createFunc, className);
+			InjectorFuncWrapper * funcWrapper = new InjectorFuncWrapper;
+			funcWrapper->autorelease();
+			funcWrapper->icfunc = createFunc;
+			classDict->setObject(funcWrapper, className);
 		}else{
 			CCLog("in mapSingleton() 已经有%s这个类了，不能重复map，可以先unmap一下", className.c_str());
 		}
@@ -67,5 +90,10 @@ namespace cocos2d_mvc{
 		singletonDict->removeObjectForKey(className);
 		classDict->removeObjectForKey(className);
 		valueDict->removeObjectForKey(className);
+	}
+	Injector::~Injector(){
+		CC_SAFE_RELEASE(singletonDict);
+		CC_SAFE_RELEASE(classDict);
+		CC_SAFE_RELEASE(valueDict);
 	}
 }

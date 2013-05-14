@@ -1,7 +1,7 @@
 #include "cocos2d_mvc.h"
 
 namespace cocos2d_mvc{
-	EventDispatcher* EventDispatcher::globalDispatcher = EventDispatcher::create();
+	//EventDispatcher* EventDispatcher::globalDispatcher = EventDispatcher::create();
 	EventDispatcher::EventDispatcher(){
 		listeningEvts = CCDictionary::create();
 		CC_SAFE_RETAIN(listeningEvts);
@@ -22,9 +22,9 @@ namespace cocos2d_mvc{
 		return globalDispatcher;
 	}
 	
-	void EventDispatcher::destroyGlobalEvtDispatcher(){//获取之后要retain
+	/*void EventDispatcher::destroyGlobalEvtDispatcher(){//获取之后要retain
 		CC_SAFE_RELEASE(globalDispatcher);
-	}
+	}*/
 
 	/**
 	listeningEvts的结构：

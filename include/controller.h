@@ -4,21 +4,21 @@
 namespace cocos2d_mvc{
 	class View;
 	class Model;
-	class Controller: public CCNode, public EventDispatchHelper{
+	class  Controller: public CCNode, public EventDispatchHelper{
+	protected:
 		View *v;
 		Model* m;
-		EEE(Controller)//½ûÖ¹¸³Öµ
-		ECC(Controller)//½ûÖ¹copy
-	protected:
-		Controller(View *v, Model* m);
+		Controller(bool doSchedule = false);
 	public:
-		virtual bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent) = 0;
-		virtual void ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent) = 0;
-		virtual void ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent) = 0;
+		virtual void ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent){};
+		virtual void ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent){};
+		virtual void ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent) {};
 
 		virtual void onUpdate(float f);
 		virtual void onModelChanged();
-		
+		View* getView();
+		void setView(View * v);
+
 		virtual ~Controller();
 		//CREATE_FUNC(Controller);
 	};

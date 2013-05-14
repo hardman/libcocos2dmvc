@@ -3,9 +3,9 @@
 #include "cocos2d_mvc.h"
 
 namespace cocos2d_mvc{
-	class Context: public EventDispatchHelper{
+	class  Context: public EventDispatchHelper{
 	protected:
-		EC(Context)
+		Context();
 	public:
 		virtual void registerInjectorMaps();
 	};

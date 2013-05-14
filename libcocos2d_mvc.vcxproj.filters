@@ -54,9 +54,6 @@
     <ClInclude Include="include\Context.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="testinclude.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="event\event.cpp">

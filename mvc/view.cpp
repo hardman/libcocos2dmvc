@@ -3,15 +3,25 @@
 namespace cocos2d_mvc{
 		View::View(Controller *controller): controller(controller){
 		}
-		bool View::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent){
-			return controller->ccTouchBegan(pTouch, pEvent);
+		View::View(){
 		}
-		void View::ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent){
-			controller->ccTouchMoved(pTouch, pEvent);
+		void View::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent){
+			controller->ccTouchesBegan(pTouches,pEvent);
+			cout<<"1"<<endl;
 		}
-		void View::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent){
-			controller->ccTouchEnded(pTouch, pEvent);
+		void View::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent){
+			controller->ccTouchesMoved(pTouches,pEvent);
+			cout<<"2"<<endl;
+		}
+		void View::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent){
+			controller->ccTouchesEnded(pTouches,pEvent);
+			cout<<"3"<<endl;
+		}
+		void View::onUpdate(float f){
 		}
 		View::~View(){
+		}
+		void View::setController(Controller *c){
+			controller = c;
 		}
 }

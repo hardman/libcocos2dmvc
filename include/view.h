@@ -7,15 +7,17 @@ namespace cocos2d_mvc{
 	//class Model;
 	class Controller;
 	//class EventDispatcher;
-	class View :public CCLayer, public EventDispatchHelper{
+	class  View :public CCLayer, public EventDispatchHelper{
 	protected:
 		EventDispatcher *eventDispatcher;
 		Controller* controller;
-	public:
+		View();
 		View(Controller *controller);
-		bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent);
-		void ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent);
-		void ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent);
+	public:
+		void setController(Controller *c);
+		void ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent);
+		void ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent);
+		void ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent);
 		virtual void refreshView(Model*model) = 0;
 		virtual void onUpdate(float f);
 		virtual ~View();
