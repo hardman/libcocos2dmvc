@@ -10,13 +10,14 @@ namespace cocos2d_mvc{
 		,needClean(needClean)
 		,priority(priority)
 	{
+		CC_SAFE_RETAIN(data);
 	}
 	bool Event::operator<(const Event & evt){
 		return this->priority < evt.priority;
 	}
 	Event::~Event(){
 		if(needClean && data != 0){
-			data->release();
+			CC_SAFE_RELEASE(data);
 		}
 	}
 }

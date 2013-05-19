@@ -3,12 +3,21 @@
 namespace cocos2d_mvc{
 	//EventDispatcher* EventDispatcher::globalDispatcher = EventDispatcher::create();
 	EventDispatcher::EventDispatcher(){
+		parent = 0;
 		listeningEvts = CCDictionary::create();
 		CC_SAFE_RETAIN(listeningEvts);
 		incomingReqEvts = CCDictionary::create();
 		CC_SAFE_RETAIN(incomingReqEvts);
 
-		schedule(schedule_selector(EventDispatcher::onUpdate));
+		//schedule(schedule_selector(EventDispatcher::onUpdate));
+	}
+	
+	void EventDispatcher::setParent(CCNode* p){
+		if(parent == 0){
+			parent = p;
+			p->addChild(this);
+			schedule(schedule_selector(EventDispatcher::onUpdate));
+		}
 	}
 	EventDispatcher *EventDispatcher::getNewEvtDispatcher(){//获取之后要retain
 		return EventDispatcher::create();
@@ -56,18 +65,21 @@ namespace cocos2d_mvc{
 		if(!dict){
 			dict = CCDictionary::create();
 			CC_SAFE_RETAIN(dict);
-			listeningEvts->setObject(dict,evt->evt);
+			CCObject * tmpdict = POINTER_SHIFT(CCObject, dict);
+			listeningEvts->setObject(tmpdict,evt->evt);
 		}
 		//现在已经找出了evt对应的所有dict了。
 		CCArray * arr = dynamic_cast<CCArray*>(dict->objectForKey(evt->priority));
 		if(!arr){
 			arr = CCArray::create();
 			CC_SAFE_RETAIN(arr);
-			dict->setObject(arr, evt->priority);
+			CCObject * arrtmp = POINTER_SHIFT(CCObject,arr);
+			dict->setObject(arrtmp, evt->priority);
 		}
 		//现在找到dict中evt相同优先级的数组了。
 		CC_SAFE_RETAIN(evt);
-		arr->addObject(evt);//加到尾部,取的时候 从头取
+		CCObject* tmpevt = POINTER_SHIFT(CCObject,evt);
+		arr->addObject(tmpevt);//加到尾部,取的时候 从头取
 	}
 
 	void EventDispatcher::rmListener(Event *evt){
@@ -101,23 +113,35 @@ namespace cocos2d_mvc{
 		CC_SAFE_RETAIN(evt);
 		arr->addObject(evt);
 	}
-
+	void safeReleaseArr(CCArray* arr){
+		CCObject* obj;
+		CCARRAY_FOREACH(arr,obj){
+			CC_SAFE_RELEASE(obj);
+		}
+	}
 	void EventDispatcher::onUpdate(float f){
 		//不同的优先级需要同时判断
 		for(int i = Event::EVENT_PRIORITY_HIGHEST; i >= Event::EVENT_PRIORITY_LOWEST; i--){
 			CCArray * arr = dynamic_cast<CCArray*>(incomingReqEvts->objectForKey(i));
+			if(arr == 0)continue;
 			CCObject * incomingEvt;
 			CCARRAY_FOREACH(arr,incomingEvt){
 				Event *innerEvt = dynamic_cast<Event*>(incomingEvt);
 				if(innerEvt){
-					CCArray * listeningArr = dynamic_cast<CCArray*>(listeningEvts->objectForKey(innerEvt->evt));
-					CCObject* listeningEvt;
-					CCARRAY_FOREACH(listeningArr,listeningEvt){
-						Event* leInner = dynamic_cast<Event*>(listeningEvt);
-						(leInner->target->*leInner->func)(innerEvt->data);
+					CCDictionary * lisDict = POINERT_SHIFT_RESTORE(CCDictionary, dynamic_cast<CCDictionary*>(listeningEvts->objectForKey(innerEvt->evt)));
+					for(int i = Event::EVENT_PRIORITY_HIGHEST; i >= Event::EVENT_PRIORITY_LOWEST; i--){
+						CCObject *lisArrtmp = lisDict->objectForKey(i);
+						CCArray * lisArr = dynamic_cast<CCArray*>(POINERT_SHIFT_RESTORE(CCArray, lisArrtmp));
+						CCObject* listeningEvt;
+						CCARRAY_FOREACH(lisArr,listeningEvt){
+							Event* leInner = POINERT_SHIFT_RESTORE(Event, dynamic_cast<Event*>(listeningEvt));
+							if(leInner->target == 0) continue;
+							((leInner->target)->*(leInner->func))(innerEvt->data);
+						}
 					}
 				}
 			}
+			safeReleaseArr(arr);
 			arr->removeAllObjects();
 			incomingReqEvts->removeObjectForKey(i);
 		}

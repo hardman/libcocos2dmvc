@@ -8,8 +8,10 @@ namespace cocos2d_mvc{
 		CCDictionary * incomingReqEvts;
 		static EventDispatcher * globalDispatcher;
 		EventDispatcher();
+		CCNode* parent;
 	protected:
 	public:
+		void setParent(CCNode* parent);
 		static EventDispatcher *getNewEvtDispatcher();
 		static EventDispatcher *getGlobalEvtDispatcher();
 		//static void destroyGlobalEvtDispatcher();

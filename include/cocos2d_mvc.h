@@ -7,7 +7,9 @@
 #include "cocoa\CCDictionary.h"
 #include "base_nodes\CCNode.h"
 #include "layers_scenes_transitions_nodes\CCLayer.h"
+#include "layers_scenes_transitions_nodes\CCScene.h"
 #include <iostream>
+/*#include "cocos2d.h"*/
 USING_NS_CC;
 using namespace std;
 
@@ -24,9 +26,16 @@ namespace cocos2d_mvc{
 	#define ECC EMPTY_COPY_CONSTRUCT
 	*/
 	class EventDispatchHelper;
+	
+
+	#define POINTER_SHIFT(parentPointer, childPointer) \
+		((parentPointer*)(void*)childPointer)
+	#define POINERT_SHIFT_RESTORE(targetPointer, srcPointer) \
+		((targetPointer*)(void*)srcPointer)
+
 
 	typedef void (EventDispatchHelper::*EVT_CALLBACK)(CCObject *data);
-	#define trans_evt_callback(callback) (EVT_CALLBACK)(callback)
+	#define trans_evt_callback(callback) (EVT_CALLBACK)(&callback)
 	//for injector begin
 	typedef CCObject* (*injectorCreate)();
 	#define trans_injector_create(create) (injectorCreate)(create)

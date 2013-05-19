@@ -3,17 +3,23 @@
 namespace cocos2d_mvc{
 		View::View(Controller *controller): controller(controller){
 		}
-		View::View(){
+		View::View():controller(0){
 		}
 		void View::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent){
+			CC_SAFE_RETAIN(pTouches);
+			CC_SAFE_RETAIN(pEvent);
 			controller->ccTouchesBegan(pTouches,pEvent);
 			cout<<"1"<<endl;
 		}
 		void View::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent){
+			CC_SAFE_RETAIN(pTouches);
+			CC_SAFE_RETAIN(pEvent);
 			controller->ccTouchesMoved(pTouches,pEvent);
 			cout<<"2"<<endl;
 		}
 		void View::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent){
+			CC_SAFE_RETAIN(pTouches);
+			CC_SAFE_RETAIN(pEvent);
 			controller->ccTouchesEnded(pTouches,pEvent);
 			cout<<"3"<<endl;
 		}

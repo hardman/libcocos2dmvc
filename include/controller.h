@@ -10,7 +10,9 @@ namespace cocos2d_mvc{
 		Model* m;
 		Controller(bool doSchedule = false);
 	public:
-		virtual void ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent){};
+		virtual void ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent){
+			cout<<""<<endl;
+		};
 		virtual void ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent){};
 		virtual void ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent) {};
 
@@ -18,6 +20,7 @@ namespace cocos2d_mvc{
 		virtual void onModelChanged();
 		View* getView();
 		void setView(View * v);
+		CCScene * scene();
 
 		virtual ~Controller();
 		//CREATE_FUNC(Controller);
